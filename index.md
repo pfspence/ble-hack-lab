@@ -3,20 +3,27 @@ This lab walks through some tools that are used for hacking Bluetooth Low Energy
 ## Tips for this lab
 
 :warning: BLE devices are finicky. You may encounter errors when following this lab. Here are some helpful tips:
-1. Don't be afraid to retry commands multiple times if you get an error. You may also see error messages when in fact the command was successful.
+1. Don't be afraid to retry commands multiple times if you get an error. You will also see error messages when in fact the command was successful.
 2. Remove and re insert the Bluetooth dongle.
 3. Power cycle the BLE CTF device.
 
-## Gatt Server
+## Tools
 
-## hciconfig
+We can use a few different tools to solve some BLE CTF Infinity challenges.
+
+- hciconfig
+- bettercap
+- gatttool
+- bleah
+
+### Hciconfig
 
 You can view BLE interfaces on you system by using the `hciconfig` command. You should see at least one interface.
 
 <img src="images/hciconfig.png" />
 
 
-## Bettercap
+### Bettercap
 
 We need to discover the address of our target BLE device. There are many tools that can accomplish this. We will use <a href="https://bettercap.org">bettercap</a> in the command line.
 
@@ -54,30 +61,81 @@ This is the BLE CTF Infinity scoreboard, which nicely shows our progress. We sho
 The BLE CTF is made of multiple Gatt servers which we need to rotate through by writing values to `0x0030`
 
 
-**Note**: We have be using `bettercap` in interactive mode. You can also run individual commands from the shell prompt.
+**Note**: We have be using `bettercap` in interactive mode. You can also run commands from a shell prompt.
 
 ```bash
 $ sudo bettercap --eval "ble.recon on"
 ```
 
-We will continue to use `bettercap` throughout this lab, but for now let's look at another tool.
-
-## Gatttool
+### Gatttool
 
 
+We can use `gatttool` to write values to handle `0x0030` to navigate to different challenges. We can write `0000` to go to scoreboard at any time. This is also where flag 0 is.
+```bash
+$ gatttool -b AA:BB:CC:DD:EE:FF --char-write-req -a 0x00300 -n 0000  
+```
 
-## Something
+When doing this, you will get the following error:
+```
+Characteristic Write Request failed: Request attribute has encountered an unlikely error
+```
+Don't worry about this. Its unavoidable because of the way the CTF was architected.
+
+
+### Bleah
 
 
 
+## Flag 0
+There aren't clear instructions on what to do for flag 0 since it shares the same Gatt server as the scoreboard, but the 'Device Name' is actually the flag.
 
+<img src="images/flag_0.png" />
+
+Exit bettercap and use `gatttool` to write the value to where we submit flags, handle `0x002e`. (Remember to change the device MAC address)
+
+```bash
+$ gatttool -b AA:BB:CC:DD:EE:FF --char-write-req -a 0x002e -n $(echo -n "04dc54d9053b4307680a" | xxd -ps)
+Characteristic value was written successfully
+```
+
+Now let's check the scoreboard. Go back into bettercap, run recon, and enumerate the device.
+```bash
+$ sudo bettercap
+```
+```
+» ble.recon on
+» ble.recon off
+» ble.enum AA:BB:CC:DD:EE:FF
+```
+We should see that Flag 0 is now complete.
+
+<img src="images/ble_enum_flag_0.png" />
+
+
+## Flag 1
 
 <img src="images/gatttool_flag_1.png" />
+
+## Flag 2
+
+
+
+## Flag 3
+
 
 <img src="images/spooftooph.png" width="54%"/>
 
 <img src="images/hciconfig_spoofed_mac.png" width="68%"/>
 
+
+## Finishing up
+
+Thats it for this lab. You are welcome to continue to try to
+Reset the CTF by writing `0xC1EA12` to handle `0x0032`.
+
+```
+$ gatttool -b AA:BB:CC:DD:EE:FF --char-write-req -a 0x0032 -n C1EA12
+```
 
 ### References
 - <a href="https://github.com/hackgnar/ble_ctf_infinity">https://github.com/hackgnar/ble_ctf_infinity</a>
