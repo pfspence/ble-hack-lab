@@ -1,5 +1,3 @@
-# BLE Hack Lab
-
 This lab walks through some tools that are used for hacking Bluetooth Low Energy (BLE). Our target is a Bluetooth CTF project designed to allow users to learn about core concepts of Bluetooth client and server interactions. (<a href="https://github.com/hackgnar/ble_ctf_infinity">BLE CTF Infinity</a>)
 
 ## Tips for this lab
@@ -19,15 +17,15 @@ This lab walks through some tools that are used for hacking Bluetooth Low Energy
 
 <img src="images/ble_show.png" />
 
-<img src="images/ble_enum_0.png" width="704px"/>
+<img src="images/ble_enum_0.png" width="84%"/>
 
 <img src="images/gatttool_flag_1.png" />
 
-<img src="images/spooftooph.png" width="432px"/>
+<img src="images/spooftooph.png" width="54%"/>
 
-<img src="images/hciconfig_spoofed_mac.png" width="538px"/>
+<img src="images/hciconfig_spoofed_mac.png" width="68%"/>
 
 
 ### References
 - <a href="https://github.com/hackgnar/ble_ctf_infinity">https://github.com/hackgnar/ble_ctf_infinity</a>
-- Chapter 11 of <a href="https://nostarch.com/practical-iot-hacking">Practical IoT Hacking<a/> from No Starch Press.
+- Chapter 11 of <a href="https://nostarch.com/practical-iot-hacking">Practical IoT Hacking</a> from No Starch Press.
