@@ -257,6 +257,15 @@ After authenticating, it will then print the value of `0x002c`.
 
 <img src="images/gatttool_flag_2.png" width="80%"/>
 
+Using <a href="https://gchq.github.io/CyberChef/#recipe=From_Hex('Auto')&input=MzUgNjQgMzYgMzkgMzYgNjMgNjQgNjYgMzUgMzMgNjEgMzkgMzEgMzYgNjMgMzAgNjEgMzkgMzggNjQ">Cyberchef</a> we see
+```
+35 64 36 39 36 63 64 66 35 33 61 39 31 36 63 30 61 39 38 64
+```
+decodes to
+```
+5d696cdf53a916c0a98d
+```
+
 ### Submit the Flag
 Submit the flag with `gatttool`.
 
@@ -271,17 +280,82 @@ Navigate back to the scoreboard by writing `0x0000` to `0x0030`.
 ```bash
 $ gatttool -b AA:BB:CC:DD:EE:FF --char-write-req -a 0x0030 -n 0000
 ```
-You can check your progress for flag 1 by using `bettercap` or reading handle `0x0038` with `gatttool`. You should see that flag 2 is now complete.
+You can check your progress for flag 2 by using `bettercap` or reading handle `0x0038` with `gatttool`. You should see that flag 2 is now complete.
 
 <img src="images/ble_enum_flag_2_complete.png" width="85%"/>
 
 
 ## Flag 3
 
+### Navigate to Flag 3 Challenge
 
+Navigate to challenge 3 by writing `0x0003` to handle `0x0030`
+```bash
+$ gatttool -b AA:BB:CC:DD:EE:FF --char-write-req -a 0x0030 -n 0003
+```
+
+### View Gatt Table
+
+Use `bettercap` to enumerate its characteristics again.
+```bash
+$ sudo bettercap
+```
+```
+> ble.recon on
+> ble.recon off
+> ble.enum AA:BB:CC:DD:EE:FF
+```
+
+<img src="images/ble_enum_flag_3.png" width="75%" />
+
+We can see that it is looking for a device with the MAC address `11:22:33:44:55:66` to connect to it.
+
+## View the Interface MAC Address
+
+Use `hciconfig` to view the MAC address of the interface.
+
+<img src="images/hciconfig.png" width="60%"/>
+
+### Spooftooph
+
+We can spoof our mac address with the tool `spooftooph`. (Make sure to use `sudo`)
+```
+$ sudo spooftooph -i hci0 -a 11:22:33:44:55:66
+```
 <img src="images/spooftooph.png" width="54%"/>
 
+
+Once we have done this, we need to reset the interface for the changes to take.
+```
+$ sudo hciconfig hci0 reset
+```
+Now `hciconfig` should show the new MAC.
+
 <img src="images/hciconfig_spoofed_mac.png" width="68%"/>
+
+### Read the Gatt Table with Spoofed MAC
+
+Using `bettercap` with the spoofed MAC we can now read the flag: `0ad3fe0c58e0a47b8afb`.
+
+<img src="images/ble_enum_flag_3_spoofed_mac.png" width="75%"/>
+
+### Submit the Flag
+Submit the flag with `gatttool`.
+
+```bash
+$ gatttool -b AA:BB:CC:DD:EE:FF --char-write-req -a 0x002e -n $(echo -n "0ad3fe0c58e0a47b8afb" | xxd -ps)
+Characteristic value was written successfully
+```
+
+### Check Your Score
+Navigate back to the scoreboard by writing `0x0000` to `0x0030`.
+
+```bash
+$ gatttool -b AA:BB:CC:DD:EE:FF --char-write-req -a 0x0030 -n 0000
+```
+You can check your progress for flag 3 by using `bettercap` or reading handle `0x0038` with `gatttool`. You should see that flag 3 is now complete.
+
+<img src="images/ble_enum_flag_3_complete.png" width="85%"/>
 
 
 ## Finishing up
