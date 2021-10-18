@@ -2,8 +2,8 @@ This lab walks through some tools that are used for hacking Bluetooth Low Energy
 
 ## Tips for this lab
 
-:warning: BLE devices are finicky. You may encounter errors when following this lab. Here are some helpful tips:
-1. Don't be afraid to retry commands multiple times if you get an error. You will also see error messages when in fact the command was successful.
+⚠️⚠️⚠️ BLE devices are finicky. You **will** encounter errors and have to retry commands when following this lab. Here are some helpful tips:
+1. Don't be afraid to run commands multiple times if you get an error. You may see error messages when in fact the command was successful.
 2. Remove and re insert the Bluetooth dongle. (Or run `sudo systemctl restart bluetooth`)
 3. Power cycle the BLE CTF device. (Progress will persist, but you will need to navigate to the challenge again)
 
@@ -60,14 +60,11 @@ This is the BLE CTF Infinity scoreboard, which nicely shows our progress. We sho
 The BLE CTF is made of multiple Gatt servers which we need to rotate through by writing values to `0x0030`
 
 
-**Note**: We have be using `bettercap` in interactive mode. You can also run commands from a shell prompt.
-
 ```bash
 $ sudo bettercap --eval "ble.recon on"
 ```
 
 ### Gatttool
-
 
 We can use `gatttool` to write values to handle `0x0030` to navigate to different challenges. We can write `0000` to go to scoreboard at any time. This is also where flag 0 is.
 ```bash
