@@ -44,4 +44,8 @@ This is unavoidable because of the way the CTF was architected.
 
 Although actually deprecated in favor of Bettercap, it may be easier to use bleah to target which device to enumerate characteristics.
 
+```
+$ sudo bleah -b 94:B9:7E:FA:27:72 -e
+```
+
 <img src="images/bleah_scoreboard.png"/>
