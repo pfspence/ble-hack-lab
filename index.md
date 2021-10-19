@@ -13,6 +13,6 @@ This lab walks through some tools that are used for hacking Bluetooth Low Energy
 
 - <a href="getting-started.md">Getting Started</a>
 - <a href="flag0.md">Flag 0</a>
-- <a href="flag1.md">Flag 0</a>
-- <a href="flag2.md">Flag 0</a>
+- <a href="flag1.md">Flag 1</a>
+- <a href="flag2.md">Flag 2</a>
 - <a href="finishing-up.md">Finishing Up</a>
