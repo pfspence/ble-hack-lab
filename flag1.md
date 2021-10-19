@@ -44,7 +44,7 @@ $ gatttool -b 94:B9:7E:FA:27:72 char-read -a 0x002c
 ```
 <img src="images/flag_01_0x002c.png" width="80%"/>
 
-The value at `0x002c` decoded looks like our flag :)
+Gatttool returns values that are hex encoded. Once decoded, the value at `0x002c` looks like our flag :)
 
 ### Submit the Flag
 
